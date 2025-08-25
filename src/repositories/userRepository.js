@@ -9,6 +9,10 @@ class UserRepository {
   findOne(data) {
     return User.findOne(data)
   }
+
+  findById(userId) {
+    return User.findById(userId)
+  }
 }
 
 module.exports = new UserRepository();

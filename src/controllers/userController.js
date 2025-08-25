@@ -72,8 +72,26 @@ const loginUser = async (req, res, next) => {
 const getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
-  } catch (err) {}
+    if (!id) {
+      return next(throwError("User ID is null", HttpStatus.BAD_REQUEST));
+    }
+    const user = await userRepo.findById(id); 
+
+    if (!user) {
+      return next(throwError("User not found", HttpStatus.NOT_FOUND));
+    }
+
+    const safeUser = { name: user.name, email: user.email }
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "User found!",
+      data: safeUser
+    })
+
+  } catch (err) {
+    next(err);
+  }
 };
 
 const getAllUser = async (req, res, next) => {};
