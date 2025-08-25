@@ -45,18 +45,37 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    
+
+    const user = await userRepo.findOne({ email });
+    if (!user) {
+      return next(throwError("User does not exist", HttpStatus.UNAUTHORIZED));
+    }
+
+    const isPassValid = await bcrypt.compare(password, user.password);
+    if (!isPassValid) {
+      return next(throwError("Password does not match", HttpStatus.UNAUTHORIZED))
+    }
+
+    const safeUser = { name: user.name, email: user.email };
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: `Welcome ${user.name}`,
+      data: safeUser
+    })
+
   } catch (err) {
     next(err);
   }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
+    
   } catch (err) {}
 };
 
-const getAllUser = async (req, res) => {};
+const getAllUser = async (req, res, next) => {};
 
 module.exports = { registerUser, loginUser, getUser, getAllUser };
