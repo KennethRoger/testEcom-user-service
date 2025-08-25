@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const throwError = require("../utils/errorObject");
 const HttpStatus = require("../utils/httpStatusCodes");
 
-const userRepo = require("../repositories/UserRepository");
+const userRepo = require("../repositories/userRepository");
 
 const registerUser = async (req, res, next) => {
   try {
