@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const HttpStatus = require("../utils/httpStatusCodes");
 const throwError = require("../utils/errorObject");
 const toSafeUser = require("../utils/safeUserObject");
+const generateToken = require("../utils/generateToken");
 
 const userRepo = require("../repositories/userRepository");
 
@@ -30,10 +31,15 @@ const registerUser = async (req, res, next) => {
       password: hashedPassword,
     });
 
+    const token = generateToken(newUser);
+
     res.status(HttpStatus.CREATED).json({
       success: true,
       message: "New user registered successfully!",
-      data: toSafeUser(newUser),
+      data: {
+        user: toSafeUser(newUser),
+        token,
+      },
     });
   } catch (err) {
     next(err);
@@ -51,15 +57,21 @@ const loginUser = async (req, res, next) => {
 
     const isPassValid = await bcrypt.compare(password, user.password);
     if (!isPassValid) {
-      return next(throwError("Password does not match", HttpStatus.UNAUTHORIZED))
+      return next(
+        throwError("Password does not match", HttpStatus.UNAUTHORIZED)
+      );
     }
+
+    const token = generateToken(user);
 
     res.status(HttpStatus.OK).json({
       success: true,
       message: `Welcome ${user.name}`,
-      data: toSafeUser(user),
-    })
-
+      data: {
+        user: toSafeUser(user),
+        token,
+      },
+    });
   } catch (err) {
     next(err);
   }
@@ -71,7 +83,7 @@ const getUser = async (req, res, next) => {
     if (!id) {
       return next(throwError("User ID is null", HttpStatus.BAD_REQUEST));
     }
-    const user = await userRepo.findById(id); 
+    const user = await userRepo.findById(id);
 
     if (!user) {
       return next(throwError("User not found", HttpStatus.NOT_FOUND));
@@ -80,9 +92,8 @@ const getUser = async (req, res, next) => {
     res.status(HttpStatus.OK).json({
       success: true,
       message: "User found!",
-      data: toSafeUser(user)
-    })
-
+      data: toSafeUser(user),
+    });
   } catch (err) {
     next(err);
   }

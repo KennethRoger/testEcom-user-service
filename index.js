@@ -10,7 +10,11 @@ require("dotenv").config()
 
 const PORT = process.env.PORT;
 
-app.use(userRoutes);
+app.get("/", (req, res) => {
+  res.send("<h1>Hello from testEcom-user-service</h1>");
+})
+
+app.use("/users", userRoutes);
 // Error response handler
 app.use(errorHandler)
 
