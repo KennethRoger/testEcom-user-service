@@ -1,7 +1,8 @@
 const bcrypt = require("bcryptjs");
 
-const throwError = require("../utils/errorObject");
 const HttpStatus = require("../utils/httpStatusCodes");
+const throwError = require("../utils/errorObject");
+const toSafeUser = require("../utils/safeUserObject");
 
 const userRepo = require("../repositories/userRepository");
 
@@ -29,13 +30,10 @@ const registerUser = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    // Avoiding sending password
-    const safeUser = { ...newUser, password: "" };
-
     res.status(HttpStatus.CREATED).json({
       success: true,
       message: "New user registered successfully!",
-      data: safeUser,
+      data: toSafeUser(newUser),
     });
   } catch (err) {
     next(err);
@@ -56,12 +54,10 @@ const loginUser = async (req, res, next) => {
       return next(throwError("Password does not match", HttpStatus.UNAUTHORIZED))
     }
 
-    const safeUser = { name: user.name, email: user.email };
-
     res.status(HttpStatus.OK).json({
       success: true,
       message: `Welcome ${user.name}`,
-      data: safeUser
+      data: toSafeUser(user),
     })
 
   } catch (err) {
@@ -81,12 +77,10 @@ const getUser = async (req, res, next) => {
       return next(throwError("User not found", HttpStatus.NOT_FOUND));
     }
 
-    const safeUser = { name: user.name, email: user.email }
-
     res.status(HttpStatus.OK).json({
       success: true,
       message: "User found!",
-      data: safeUser
+      data: toSafeUser(user)
     })
 
   } catch (err) {
