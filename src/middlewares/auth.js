@@ -1,3 +1,6 @@
+// Redundant at the moment
+// An auth service is implemented
+
 const jwt = require("jsonwebtoken");
 const throwError = require("../utils/errorObject");
 const HttpStatus = require("../utils/httpStatusCodes");

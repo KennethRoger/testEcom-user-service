@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 
-const connectDB = require("./src/models/mongodb/connectDB");
-const userRoutes = require("./src/routes/userRoutes");
-const errorHandler = require("./src/middlewares/errorHandler");
+const connectDB = require("./models/mongodb/connectDB");
+const userRoutes = require("./routes/userRoutes");
+const errorHandler = require("./middlewares/errorHandler");
 
 // Access to env variable 
 require("dotenv").config()

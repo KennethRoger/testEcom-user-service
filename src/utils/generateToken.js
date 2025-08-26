@@ -1,9 +1,18 @@
-const jwt = require("jsonwebtoken");
+const client = require("../grpc-client");
 
 function generateToken(userData) {
-  return jwt.sign(
-    { _id: userData._id, email: userData.email },
-    process.env.JWT_SECRET,
-    { expiresIn: "24h" }
-  );
+  const tokenData = { _id: userData._id, email: userData.email };
+  
+  return new Promise((resolve, reject) => {
+    // A grpc method calling auth-service
+    client.GenerateToken(tokenData, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      if (res.success) resolve(res.token);
+      else resolve(null);
+    })
+  })
 }
+
+module.exports = generateToken;

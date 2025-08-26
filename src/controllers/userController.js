@@ -31,7 +31,10 @@ const registerUser = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    const token = generateToken(newUser);
+    const token = await generateToken(newUser);
+    if (!token) {
+      return next(throwError("Server is facing some issues!", HttpStatus.INTERNAL_SERVER_ERROR));
+    }
 
     res.status(HttpStatus.CREATED).json({
       success: true,
@@ -62,7 +65,10 @@ const loginUser = async (req, res, next) => {
       );
     }
 
-    const token = generateToken(user);
+    const token = await generateToken(user);
+    if (!token) {
+      return next(throwError("Server is facing some issues!", HttpStatus.INTERNAL_SERVER_ERROR));
+    }
 
     res.status(HttpStatus.OK).json({
       success: true,
