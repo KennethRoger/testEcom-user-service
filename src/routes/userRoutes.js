@@ -9,8 +9,8 @@ router.post("/login", loginUser);
 router.get("/:id", getUser);
 
 // ADMIN ROUTES
-router.post("/admin/login", registerAdmin);
+router.post("/admin/register", registerAdmin);
 router.get("/", getAllUser);
-router.delete("/", deleteUser);
+router.delete("/:id", deleteUser);
 
 module.exports = router;
