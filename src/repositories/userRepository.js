@@ -17,6 +17,10 @@ class UserRepository {
   findAll() {
     return User.find();
   }
+
+  deleteOne(userId) {
+    return User.findByIdAndDelete(userId);
+  }
 }
 
 module.exports = new UserRepository();

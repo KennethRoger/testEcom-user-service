@@ -105,6 +105,8 @@ const getUser = async (req, res, next) => {
   }
 };
 
+// ADMIN CONTROLLERS
+
 const getAllUser = async (req, res, next) => {
   try {
     const users = await userRepo.findAll();
@@ -119,4 +121,26 @@ const getAllUser = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getUser, getAllUser };
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return next(throwError("ID is null!", HttpStatus.BAD_REQUEST));
+    }
+  
+    const deletedUser = await userRepo.deleteOne(id);
+    if (!deletedUser) {
+      return next(throwError("User is either deleted or was never present!", HttpStatus.NOT_FOUND));
+    }
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "User was deleted successfully",
+      data: deleteUser
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { registerUser, loginUser, getUser, getAllUser, deleteUser };
