@@ -7,11 +7,15 @@ class UserRepository {
   }
 
   findOne(data) {
-    return User.findOne(data)
+    return User.findOne(data);
   }
 
   findById(userId) {
-    return User.findById(userId)
+    return User.findById(userId);
+  }
+
+  findAll() {
+    return User.find();
   }
 }
 

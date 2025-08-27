@@ -105,6 +105,18 @@ const getUser = async (req, res, next) => {
   }
 };
 
-const getAllUser = async (req, res, next) => {};
+const getAllUser = async (req, res, next) => {
+  try {
+    const users = await userRepo.findAll();
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "Fetched all users!",
+      data: users
+    })
+  } catch (err) {
+    next(err);
+  }
+};
 
 module.exports = { registerUser, loginUser, getUser, getAllUser };
