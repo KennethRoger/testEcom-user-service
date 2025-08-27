@@ -1,7 +1,7 @@
 const client = require("../grpc-client");
 
 function generateToken(userData) {
-  const tokenData = { _id: userData._id, email: userData.email };
+  const tokenData = { _id: userData._id, role: userData.role };
   
   return new Promise((resolve, reject) => {
     // A grpc method calling auth-service
