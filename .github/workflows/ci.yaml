@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/testEcom-user-service:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/testecom-user-service:latest .
 
       - name: Push to Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/}/testEcom-user-service:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/}/testecom-user-service:latest
