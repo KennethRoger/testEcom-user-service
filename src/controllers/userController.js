@@ -13,29 +13,29 @@ const registerUser = async (req, res, next) => {
     if (!name || !email || !password) {
       return next(throwError("Some data is missing!", HttpStatus.BAD_REQUEST));
     }
-
+    
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       return next(throwError("Bad email format!", HttpStatus.BAD_REQUEST));
     }
-
+    
     const existingUser = await userRepo.findOne({ email });
     if (existingUser) {
       return next(throwError("Email already exists!", HttpStatus.BAD_REQUEST));
     }
-
+    
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await userRepo.create({
       name,
       email,
       password: hashedPassword,
     });
-
+    
     const token = await generateToken(newUser);
     if (!token) {
       return next(throwError("Server is facing some issues!", HttpStatus.INTERNAL_SERVER_ERROR));
     }
-
+    
     res.status(HttpStatus.CREATED).json({
       success: true,
       message: "New user registered successfully!",

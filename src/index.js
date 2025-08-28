@@ -1,25 +1,12 @@
-const express = require("express");
-const app = express();
-
 // Access to env variable
 require("dotenv").config();
+
 require("./grpc-client/index");
 
+const app = require("./app")
 const connectDB = require("./models/mongodb/connectDB");
-const userRoutes = require("./routes/userRoutes");
-const errorHandler = require("./middlewares/errorHandler");
 
 const PORT = process.env.PORT;
-
-app.get("/", (req, res) => {
-  res.send("<h1>Hello from testEcom-user-service</h1>");
-});
-
-app.use(express.json());
-
-app.use("/users", userRoutes);
-// Error response handler
-app.use(errorHandler);
 
 connectDB()
   .then(() => {
