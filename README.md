@@ -2,6 +2,6 @@ This repository is a user-service of "Test-Ecom" which is created for the purpos
 
 Listing Other Services:
 
-1. User Service:
+1. User Service: https://github.com/KennethRoger/testEcom-user-service
 2. Order Service: 
 3. Payment Service:
