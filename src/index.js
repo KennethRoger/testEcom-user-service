@@ -1,8 +1,6 @@
 // Access to env variable
 require("dotenv").config();
 
-require("./grpc-client/index");
-
 const app = require("./app")
 const connectDB = require("./models/mongodb/connectDB");
 
