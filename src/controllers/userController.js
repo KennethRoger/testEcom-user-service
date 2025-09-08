@@ -9,6 +9,8 @@ const userRepo = require("../repositories/userRepository");
 
 const registerUser = async (req, res, next) => {
   try {
+    console.log(req.url);
+
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return next(throwError("Some data is missing!", HttpStatus.BAD_REQUEST));

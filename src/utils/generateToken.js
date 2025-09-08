@@ -1,4 +1,4 @@
-const client = require("../grpc-client");
+const jwt = require("jsonwebtoken");
 
 function generateToken(userData) {
   const tokenData = { _id: userData._id, role: userData.role };
